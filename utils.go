@@ -2,11 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"text/template"
+
+	"github.com/anson-vandoren/gwp/chitchat/data"
 )
 
 type Configuration struct {
@@ -46,7 +50,26 @@ func loadConfig() {
 	}
 }
 
+// convenience function to redirect to error message page
+func error_message(w http.ResponseWriter, r *http.Request, msg string) {
+	url := []string{"/err?msg=", msg}
+	http.Redirect(w, r, strings.Join(url, ""), 302)
+}
+
+// checks if the user is logged in and has a session, if not err is not nil
+func session(w http.ResponseWriter, r *http.Request) (sess data.Session, err error) {
+	cookie, err := r.Cookie("_cookie")
+	if err == nil {
+		sess = data.Session{Uuid: cookie.Value}
+		if ok, _ := sess.Check(); !ok {
+			err = errors.New("Invalid session")
+		}
+	}
+	return
+}
+
 func generateHTML(w http.ResponseWriter, data interface{}, filenames ...string) {
+	// TODO: compile all templates once instead of dynamically each request
 	var files []string
 	for _, file := range filenames {
 		files = append(files, fmt.Sprintf("templates/%s.html", file))
