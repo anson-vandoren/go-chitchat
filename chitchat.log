@@ -1,0 +1,7 @@
+ERROR2019/11/20 20:28:13 utils.go:102: pq: duplicate key value violates unique constraint "users_email_key" Cannot create user
+WARNING2019/11/21 20:20:21 utils.go:107: <nil> Failed to get cookie
+WARNING2019/11/21 20:20:34 utils.go:107: <nil> Failed to get cookie
+WARNING2019/11/21 20:24:50 utils.go:107: <nil> Failed to get cookie
+ERROR2019/11/21 20:52:59 utils.go:102: sql: expected 6 destination arguments in Scan, not 5 Cannot create post
+ERROR2019/11/21 20:53:14 utils.go:102: sql: expected 6 destination arguments in Scan, not 5 Cannot create post
+ERROR2019/11/21 20:53:33 utils.go:102: sql: expected 6 destination arguments in Scan, not 5 Cannot create post

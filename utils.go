@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"strings"
-	"text/template"
 
 	"github.com/anson-vandoren/gwp/chitchat/data"
 )
@@ -68,6 +68,18 @@ func session(w http.ResponseWriter, r *http.Request) (sess data.Session, err err
 	return
 }
 
+// parse HTML templates
+// pass in a list of file names, and get a template
+func parseTemplateFiles(filenames ...string) (t *template.Template) {
+	var files []string
+	t = template.New("layout")
+	for _, file := range filenames {
+		files = append(files, fmt.Sprintf("templates/%s.html", file))
+	}
+	t = template.Must(t.ParseFiles(files...))
+	return
+}
+
 func generateHTML(w http.ResponseWriter, data interface{}, filenames ...string) {
 	// TODO: compile all templates once instead of dynamically each request
 	var files []string
@@ -77,6 +89,22 @@ func generateHTML(w http.ResponseWriter, data interface{}, filenames ...string) 
 
 	templates := template.Must(template.ParseFiles(files...))
 	templates.ExecuteTemplate(w, "layout", data)
+}
+
+// for logging
+func info(args ...interface{}) {
+	logger.SetPrefix("INFO")
+	logger.Println(args...)
+}
+
+func danger(args ...interface{}) {
+	logger.SetPrefix("ERROR")
+	logger.Println(args...)
+}
+
+func warning(args ...interface{}) {
+	logger.SetPrefix("WARNING")
+	logger.Println(args...)
 }
 
 func version() string {
