@@ -12,9 +12,9 @@ func err(w http.ResponseWriter, r *http.Request) {
 	vals := r.URL.Query()
 	_, err := session(w, r)
 	if err != nil {
-		generateHTML(w, vals.Get("msg"), "layout", "public.navbar", "error")
+		generateHTML(w, vals.Get("msg"), "layout", "navbar", "public", "error")
 	} else {
-		generateHTML(w, vals.Get("msg"), "layout", "private.navbar", "error")
+		generateHTML(w, vals.Get("msg"), "layout", "navbar", "private", "error")
 	}
 }
 
@@ -25,9 +25,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 	} else {
 		_, err = session(w, r)
 		if err != nil {
-			generateHTML(w, threads, "layout", "public.navbar", "index")
+			generateHTML(w, threads, "layout", "navbar", "public", "index")
 		} else {
-			generateHTML(w, threads, "layout", "private.navbar", "index")
+			generateHTML(w, threads, "layout", "navbar", "private", "index")
 		}
 	}
 }

@@ -16,7 +16,9 @@
       {{ .User.Name }} - {{ .CreatedAtDate }}
     </div>    
   </div>
-  {{ end }}    
+  {{ end }}
+
+  {{ template "thread-type" . }}
 
 </div>
 
